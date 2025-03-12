@@ -25,5 +25,11 @@ def build_train_test_sets(data: pd.DataFrame, label_col: str, train_size: float)
         - train: contains (train_x, train_y)
         - test: contains (test_x, test_y
     """
-    return train_test_split(data.drop(label_col, axis=1), data[label_col], train_size=train_size)
+    try:
+        X = data.drop(label_col, axis=1)
+        y = data[label_col]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=train_size)
+        return {'train': (X_train, y_train), 'test': (X_test, y_test)}
+    except Exception as e:
+        raise Exception(f'Error while splitting data: {e}')
 
